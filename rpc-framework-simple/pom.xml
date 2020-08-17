@@ -12,6 +12,11 @@
     <artifactId>rpc-framework-simple</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.cccll</groupId>
+            <artifactId>rpc-framework-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--zookeeper-->
         <dependency>
             <groupId>org.apache.curator</groupId>
