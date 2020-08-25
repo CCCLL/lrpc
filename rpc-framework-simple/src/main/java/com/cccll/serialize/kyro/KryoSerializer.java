@@ -1,7 +1,13 @@
 package com.cccll.serialize.kyro;
 
+import com.cccll.exception.SerializeException;
 import com.cccll.serialize.Serialize;
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 public class KryoSerializer implements Serialize {
 
@@ -24,7 +30,16 @@ public class KryoSerializer implements Serialize {
      */
     @Override
     public byte[] serialize(Object obj) {
-        return new byte[0];
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             Output output = new Output(byteArrayOutputStream)) {
+            Kryo kryo = kryoThreadLocal.get();
+            // Object->byte:将对象序列化为byte数组
+            kryo.writeObject(output, obj);
+            kryoThreadLocal.remove();
+            return output.toBytes();
+        } catch (Exception e) {
+            throw new SerializeException("Serialization failed");
+        }
     }
 
     /**
@@ -36,6 +51,15 @@ public class KryoSerializer implements Serialize {
      */
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) {
-        return null;
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+             Input input = new Input(byteArrayInputStream)) {
+            Kryo kryo = kryoThreadLocal.get();
+            // byte->Object:从byte数组中反序列化出对对象
+            Object o = kryo.readObject(input, clazz);
+            kryoThreadLocal.remove();
+            return clazz.cast(o);
+        } catch (Exception e) {
+            throw new SerializeException("Deserialization failed");
+        }
     }
 }
