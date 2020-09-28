@@ -1,6 +1,7 @@
 package com.cccll.serialize.kyro;
 
 import com.cccll.exception.SerializeException;
+import com.cccll.remoting.dto.RpcRequest;
 import com.cccll.serialize.Serialize;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -9,15 +10,24 @@ import com.esotericsoftware.kryo.io.Output;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+/**
+ * Kryo序列化类，Kryo序列化效率很高，但是只兼容 Java 语言
+ *
+ * @author cccll
+ * @createTime 2020年06月10日 20:42:00
+ */
 public class KryoSerializer implements Serialize {
 
     /**
-     * Because Kryo is not thread safe. So, use ThreadLocal to store Kryo objects
+     * 由于 Kryo 不是线程安全的。每个线程都应该有自己的 Kryo，Input 和 Output 实例。
+     * 所以，使用 ThreadLocal 存放 Kryo 对象
      */
     private final ThreadLocal<Kryo> kryoThreadLocal = ThreadLocal.withInitial(() -> {
         Kryo kryo = new Kryo();
         kryo.register(RpcResponse.class);
         kryo.register(RpcRequest.class);
+        kryo.setReferences(true); //默认值为true,是否关闭注册行为,关闭之后可能存在序列化问题，一般推荐设置为 true
+        kryo.setRegistrationRequired(false); //默认值为false,是否关闭循环引用，可以提高性能，但是一般不推荐设置为 true
         return kryo;
     });
 
@@ -35,7 +45,7 @@ public class KryoSerializer implements Serialize {
             Kryo kryo = kryoThreadLocal.get();
             // Object->byte:将对象序列化为byte数组
             kryo.writeObject(output, obj);
-            kryoThreadLocal.remove();
+            kryoThreadLocal.remove(); //如果线程不关闭，那么此线程的ThreadLocalMap里就会一直存着此kryoThreadLocal，造成内存泄漏情况，所以记得用完后remove
             return output.toBytes();
         } catch (Exception e) {
             throw new SerializeException("Serialization failed");

@@ -1,5 +1,7 @@
 package com.cccll.remoting.dto;
 
+import com.cccll.entity.RpcServiceProperties;
+import com.cccll.enumeration.RpcMessageType;
 import lombok.*;
 
 import java.io.Serializable;

@@ -33,18 +33,18 @@ public final class CuratorUtils {
     }
 
     /**
-     * Create persistent nodes. Unlike temporary nodes, persistent nodes are not removed when the client disconnects
+     * 创建持久的节点。与临时节点不同，持久节点不会在客户端断开连接时被删除
      *
      * @param path node path
      */
     public static void createPersistentNode(CuratorFramework zkClient, String path) {
         try {
             if (REGISTERED_PATH_SET.contains(path) || zkClient.checkExists().forPath(path) != null) {
-                log.info("The node already exists. The node is:[{}]", path);
+                log.info("节点已经存在. The node is:[{}]", path);
             } else {
                 //eg: /my-rpc/com.cccll.HelloService/127.0.0.1:9999
                 zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath(path);
-                log.info("The node was created successfully. The node is:[{}]", path);
+                log.info("节点已成功创建. The node is:[{}]", path);
             }
             REGISTERED_PATH_SET.add(path);
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public final class CuratorUtils {
     }
 
     /**
-     * Empty the registry of data
+     * 清空注册表的数据
      */
     public static void clearRegistry(CuratorFramework zkClient) {
         REGISTERED_PATH_SET.stream().parallel().forEach(p -> {
@@ -85,23 +85,23 @@ public final class CuratorUtils {
                 throw new RpcException(e.getMessage(), e.getCause());
             }
         });
-        log.info("All registered services on the server are cleared:[{}]", REGISTERED_PATH_SET.toString());
+        log.info("服务器上的所有注册的服务将被清除:[{}]", REGISTERED_PATH_SET.toString());
     }
 
     public static CuratorFramework getZkClient() {
-        // check if user has set zk address
+        // 检查用户是否设置了zk地址
         Properties properties = PropertiesFileUtils.readPropertiesFile(RpcConfigProperties.RPC_CONFIG_PATH.getPropertyValue());
         if (properties != null) {
             defaultZookeeperAddress = properties.getProperty(RpcConfigProperties.ZK_ADDRESS.getPropertyValue());
         }
-        // if zkClient has been started, return directly
+        // 如果 zkClient 已经启动，则直接返回
         if (zkClient != null && zkClient.getState() == CuratorFrameworkState.STARTED) {
             return zkClient;
         }
-        // Retry strategy. Retry 3 times, and will increase the sleep time between retries.
+        // 重试策略. 重试3次，将增加重试之间的睡眠时间。
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(BASE_SLEEP_TIME, MAX_RETRIES);
         zkClient = CuratorFrameworkFactory.builder()
-                // the server to connect to (can be a server list)
+                // 要连接的服务器(可以是一个服务器列表)
                 .connectString(defaultZookeeperAddress)
                 .retryPolicy(retryPolicy)
                 .build();

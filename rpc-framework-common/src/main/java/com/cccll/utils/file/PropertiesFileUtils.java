@@ -22,7 +22,7 @@ public class PropertiesFileUtils {
             properties = new Properties();
             properties.load(fileInputStream);
         } catch (IOException e) {
-            log.error("occur exception when read properties file [{}]", fileName);
+            log.error("读取属性文件时发生异常 [{}]", fileName);
         }
         return properties;
     }
