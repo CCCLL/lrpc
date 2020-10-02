@@ -1,5 +1,6 @@
 package com.cccll.remoting.transport.socket;
 
+import com.cccll.config.CustomShutdownHook;
 import com.cccll.entity.RpcServiceProperties;
 import com.cccll.factory.SingletonFactory;
 import com.cccll.provider.ServiceProvider;
@@ -45,8 +46,10 @@ public class SocketRpcServer {
             server.bind(new InetSocketAddress(host, PORT));
             CustomShutdownHook.getCustomShutdownHook().clearAll();
             Socket socket;
+            //阻塞获取客户端链接
             while ((socket = server.accept()) != null) {
                 log.info("client connected [{}]", socket.getInetAddress());
+                //得到的客户端链接直接交由线程池处理
                 threadPool.execute(new SocketRpcRequestHandlerRunnable(socket));
             }
             threadPool.shutdown();
