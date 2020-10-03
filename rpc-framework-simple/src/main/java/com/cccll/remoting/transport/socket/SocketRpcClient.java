@@ -17,8 +17,8 @@ import java.net.Socket;
 /**
  * 基于 Socket 传输 RpcRequest
  *
- * @author shuang.kou
- * @createTime 2020年05月10日 18:40:00
+ * @author cccll
+ * @createTime 2020年06月13日 18:40:00
  */
 @AllArgsConstructor
 @Slf4j
