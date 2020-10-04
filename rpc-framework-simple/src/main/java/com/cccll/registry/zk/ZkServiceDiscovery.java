@@ -2,6 +2,8 @@ package com.cccll.registry.zk;
 
 import com.cccll.enumeration.RpcErrorMessage;
 import com.cccll.exception.RpcException;
+import com.cccll.loadbalance.LoadBalance;
+import com.cccll.loadbalance.RandomLoadBalance;
 import com.cccll.registry.ServiceDiscovery;
 import com.cccll.registry.zk.util.CuratorUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +20,10 @@ import java.util.List;
  */
 @Slf4j
 public class ZkServiceDiscovery implements ServiceDiscovery {
-    //private final LoadBalance loadBalance;
+    private final LoadBalance loadBalance;
 
     public ZkServiceDiscovery() {
-        //this.loadBalance = new RandomLoadBalance();
+        this.loadBalance = new RandomLoadBalance();
     }
 
     @Override
