@@ -2,7 +2,7 @@ package com.cccll.serialize.kyro;
 
 import com.cccll.exception.SerializeException;
 import com.cccll.remoting.dto.RpcRequest;
-import com.cccll.serialize.Serialize;
+import com.cccll.serialize.Serializer;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream;
  * @author cccll
  * @createTime 2020年06月10日 20:42:00
  */
-public class KryoSerializer implements Serialize {
+public class KryoSerializer implements Serializer {
 
     /**
      * 由于 Kryo 不是线程安全的。每个线程都应该有自己的 Kryo，Input 和 Output 实例。

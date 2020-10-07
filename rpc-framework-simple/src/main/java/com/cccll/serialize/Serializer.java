@@ -1,6 +1,13 @@
 package com.cccll.serialize;
 
-public interface Serialize {
+/**
+ * 序列化接口，所有序列化类都要实现这个接口
+ *
+ * @author cccll
+ * @createTime 2020年06月18日 23:29:00
+ */
+@SPI
+public interface Serializer {
     /**
      * 序列化
      *
@@ -19,5 +26,4 @@ public interface Serialize {
      * @return 反序列化的对象
      */
     <T> T deserialize(byte[] bytes, Class<T> clazz);
-
 }
