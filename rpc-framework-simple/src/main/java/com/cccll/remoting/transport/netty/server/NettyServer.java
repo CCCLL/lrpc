@@ -5,6 +5,8 @@ import com.cccll.entity.RpcServiceProperties;
 import com.cccll.factory.SingletonFactory;
 import com.cccll.provider.ServiceProvider;
 import com.cccll.provider.ServiceProviderImpl;
+import com.cccll.remoting.dto.RpcRequest;
+import com.cccll.remoting.dto.RpcResponse;
 import com.cccll.serialize.Serializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -25,8 +27,8 @@ import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Server. Receive the client message, call the corresponding method according to the client message,
- * and then return the result to the client.
+ * NettyServer 接收客户端请求，根据客户端请求调用相应的方法,
+ * 然后将结果返回给客户端。
  *
  * @author shuang.kou
  * @createTime 2020年05月25日 16:42:00

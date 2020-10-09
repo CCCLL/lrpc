@@ -42,13 +42,12 @@ public final class NettyClient {
         bootstrap.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.INFO))
-                //  连接的超时时间.
-                //  如果超过该时间或无法建立连接，则连接失败。
+                //  连接的超时时间，超过这个时间还是建立不上的话则代表连接失败.
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) {
-                        // 如果在15秒内没有数据发送到服务器，则发送一个心跳请求
+                        // 如果 15 秒之内没有发送数据给服务端的话，就发送一次心跳请求
                         ch.pipeline().addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
                         /*
                          配置自定义序列化编解码器
