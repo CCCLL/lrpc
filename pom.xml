@@ -29,8 +29,11 @@
     </properties>
 
     <modules>
-        <module>rpc-framework-simple</module>
-        <module>rpc-framework-common</module>
+        <module>lrpc-framework</module>
+        <module>lrpc-common</module>
+        <module>lrpc-demo-client</module>
+        <module>lrpc-demo-interface</module>
+        <module>lrpc-demo-server</module>
     </modules>
 
     <dependencies>

@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rpc-framework-simple</artifactId>
+    <artifactId>lrpc-framework</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.cccll</groupId>
-            <artifactId>rpc-framework-common</artifactId>
+            <artifactId>lrpc-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
