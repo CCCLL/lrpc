@@ -5,6 +5,7 @@ import com.cccll.remoting.dto.RpcResponse;
 import com.cccll.remoting.transport.netty.codec.kyro.NettyKryoDecoder;
 import com.cccll.remoting.transport.netty.codec.kyro.NettyKryoEncoder;
 import com.cccll.serialize.Serializer;
+import com.cccll.serialize.kyro.KryoSerializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
@@ -26,7 +27,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 初始化和关闭Bootstrap对象
+ * 用于初始化 和 关闭 Bootstrap 对象
  *
  * @author cccll
  */
@@ -35,15 +36,15 @@ public final class NettyClient {
     private final Bootstrap bootstrap;
     private final EventLoopGroup eventLoopGroup;
 
-    // 初始化资源，例如EventLoopGroup，Bootstrap
+    // 初始化相关资源比如 EventLoopGroup、Bootstrap
     public NettyClient() {
         eventLoopGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
-        Serializer kryoSerializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension("kyro");
+        Serializer kryoSerializer = new KryoSerializer();
         bootstrap.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.INFO))
-                //  连接的超时时间，超过这个时间还是建立不上的话则代表连接失败.
+                //  连接的超时时间，超过这个时间还是建立不上的话则代表连接失败
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
@@ -51,7 +52,7 @@ public final class NettyClient {
                         // 如果 15 秒之内没有发送数据给服务端的话，就发送一次心跳请求
                         ch.pipeline().addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
                         /*
-                         配置自定义序列化编解码器
+                         自定义序列化编解码器
                          */
                         // RpcResponse -> ByteBuf
                         ch.pipeline().addLast(new NettyKryoDecoder(kryoSerializer, RpcResponse.class));
@@ -84,6 +85,7 @@ public final class NettyClient {
     }
 
     public void close() {
+        log.info("call close method");
         eventLoopGroup.shutdownGracefully();
     }
 

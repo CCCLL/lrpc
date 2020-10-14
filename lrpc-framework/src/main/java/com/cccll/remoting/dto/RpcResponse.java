@@ -11,8 +11,7 @@ import lombok.ToString;
 import java.io.Serializable;
 
 /**
- * @author shuang.kou
- * @createTime 2020年06月11日 16:11:31
+ * @author cccll
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,15 +24,15 @@ public class RpcResponse<T> implements Serializable {
     private static final long serialVersionUID = 715745410605631233L;
     private String requestId;
     /**
-     * response code
+     * 响应码
      */
     private Integer code;
     /**
-     * response message
+     * 响应消息
      */
     private String message;
     /**
-     * response body
+     * 响应数据
      */
     private T data;
 

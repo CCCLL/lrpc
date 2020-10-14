@@ -10,6 +10,7 @@ import com.cccll.remoting.dto.RpcResponse;
 import com.cccll.remoting.transport.netty.codec.kyro.NettyKryoDecoder;
 import com.cccll.remoting.transport.netty.codec.kyro.NettyKryoEncoder;
 import com.cccll.serialize.Serializer;
+import com.cccll.serialize.kyro.KryoSerializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -29,8 +30,7 @@ import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
 /**
- * NettyServer 接收客户端请求，根据客户端请求调用相应的方法,
- * 然后将结果返回给客户端。
+ * 服务端。接收客户端消息，并且根据客户端的消息调用相应的方法，然后返回结果给客户端。
  *
  * @author cccll
  */
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class NettyServer {
 
-    private final Serializer kryoSerializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension("kyro");
+    private final Serializer kryoSerializer = new KryoSerializ  er();
     public static final int PORT = 9998;
 
     private final ServiceProvider serviceProvider = SingletonFactory.getInstance(ServiceProviderImpl.class);

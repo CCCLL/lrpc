@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * unprocessed requests by the server.
+ * 未处理的请求。
  *
  * @author cccll
  * @createTime 2020年07月09日 21:33:00

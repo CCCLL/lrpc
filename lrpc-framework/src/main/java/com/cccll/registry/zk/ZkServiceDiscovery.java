@@ -13,7 +13,7 @@ import java.net.InetSocketAddress;
 import java.util.List;
 
 /**
- * 基于zookeeper的服务发现
+ * 基于 zookeeper 实现服务发现
  *
  * @author cccll
  * @createTime 2020年07月09日 19:16:00
@@ -29,6 +29,7 @@ public class ZkServiceDiscovery implements ServiceDiscovery {
     @Override
     public InetSocketAddress lookupService(String rpcServiceName) {
         CuratorFramework zkClient = CuratorUtils.getZkClient();
+        
         List<String> serviceUrlList = CuratorUtils.getChildrenNodes(zkClient, rpcServiceName);
         if (serviceUrlList.size() == 0) {
             throw new RpcException(RpcErrorMessage.SERVICE_CAN_NOT_BE_FOUND, rpcServiceName);

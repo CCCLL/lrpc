@@ -37,7 +37,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * 读取由服务器发送来的消息
+     * 读取服务端传输的消息
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
@@ -68,7 +68,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * Called when an exception occurs in processing a client message
+     * 处理客户端消息发生异常的时候被调用
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

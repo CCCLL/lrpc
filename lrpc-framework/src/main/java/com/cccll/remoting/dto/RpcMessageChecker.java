@@ -6,7 +6,7 @@ import com.cccll.exception.RpcException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 验证 Response 和 RpcRequest
+ * 校验 RpcRequest 和 RpcRequest
  *
  * @author cccll
  * @createTime 2020年06月28日 19:05:00
