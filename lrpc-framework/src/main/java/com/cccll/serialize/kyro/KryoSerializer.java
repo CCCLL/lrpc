@@ -2,6 +2,7 @@ package com.cccll.serialize.kyro;
 
 import com.cccll.exception.SerializeException;
 import com.cccll.remoting.dto.RpcRequest;
+import com.cccll.remoting.dto.RpcResponse;
 import com.cccll.serialize.Serializer;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;

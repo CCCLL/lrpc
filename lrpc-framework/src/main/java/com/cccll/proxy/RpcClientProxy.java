@@ -5,6 +5,7 @@ import com.cccll.remoting.dto.RpcMessageChecker;
 import com.cccll.remoting.dto.RpcRequest;
 import com.cccll.remoting.dto.RpcResponse;
 import com.cccll.remoting.transport.ClientTransport;
+import com.cccll.remoting.transport.netty.client.NettyClientTransport;
 import com.cccll.remoting.transport.socket.SocketRpcClient;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -16,18 +17,17 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * 动态代理类.
- * 当动态代理对象调用一个方法时，它实际上调用下面的invoke方法。
- * 正是由于动态代理，客户端调用的远程方法就像调用本地方法一样（中间过程被屏蔽）
+ * 动态代理类。当动态代理对象调用一个方法的时候，实际调用的是下面的 invoke 方法。
+ * 正是因为动态代理才让客户端调用的远程方法像是调用本地方法一样（屏蔽了中间过程）
  *
  * @author cccll
  * @createTime 2020年06月15日 23:01:00
  */
 @Slf4j
 public class RpcClientProxy implements InvocationHandler {
+
     /**
-     *
-     * 用于向服务器发送请求。有两种实现：socket和netty
+     * 用于发送请求给服务端，对应socket和netty两种实现方式
      */
     private final ClientTransport clientTransport;
     private final RpcServiceProperties rpcServiceProperties;
@@ -50,7 +50,7 @@ public class RpcClientProxy implements InvocationHandler {
     }
 
     /**
-     * 获取代理对象
+     * 通过 Proxy.newProxyInstance() 方法获取某个类的代理对象
      */
     @SuppressWarnings("unchecked")
     public <T> T getProxy(Class<T> clazz) {
@@ -58,8 +58,7 @@ public class RpcClientProxy implements InvocationHandler {
     }
 
     /**
-     * 当你使用代理对象调用方法时，实际上会调用此方法。
-     * 代理对象是你通过 getProxy方法获得的对象。
+     * 当你使用代理对象调用方法的时候实际会调用到这个方法。代理对象就是你通过上面的 getProxy 方法获取到的对象。
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")
@@ -84,6 +83,7 @@ public class RpcClientProxy implements InvocationHandler {
         if (clientTransport instanceof SocketRpcClient) {
             rpcResponse = (RpcResponse<Object>) clientTransport.sendRpcRequest(rpcRequest);
         }
+        //校验 RpcResponse 和 RpcRequest
         RpcMessageChecker.check(rpcResponse, rpcRequest);
         return rpcResponse.getData();
     }

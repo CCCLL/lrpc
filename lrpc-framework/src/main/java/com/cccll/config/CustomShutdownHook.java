@@ -1,10 +1,11 @@
 package com.cccll.config;
 
 import com.cccll.registry.zk.util.CuratorUtils;
+import com.cccll.utils.concurrent.threadpool.ThreadPoolFactoryUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 当服务器关闭时，做一些处理，比如清除注册的所有服务
+ * 当服务端（provider）关闭的时候做一些事情比如取消注册所有服务
  *
  * @author cccll
  * @createTime 2020年07月02日 20:32:00
