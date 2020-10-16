@@ -70,7 +70,7 @@ public final class NettyClient {
      * @param inetSocketAddress server address
      * @return the channel
      */
-    @SneakyThrows
+    @SneakyThrows  //此注释省去检查时异常包层运行时异常抛出的模板代码的编写
     public Channel doConnect(InetSocketAddress inetSocketAddress) {
         CompletableFuture<Channel> completableFuture = new CompletableFuture<>();
         bootstrap.connect(inetSocketAddress).addListener((ChannelFutureListener) future -> {

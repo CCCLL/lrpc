@@ -48,6 +48,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
                 unprocessedRequests.complete(rpcResponse);
             }
         } finally {
+            //msg为netty申请的请求ByteBuf，需业务主动释放，否则会造成内存泄漏
             ReferenceCountUtil.release(msg);
         }
     }
