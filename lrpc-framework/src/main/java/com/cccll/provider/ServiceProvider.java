@@ -7,7 +7,6 @@ import com.cccll.entity.RpcServiceProperties;
  * 保存和提供服务实例对象。服务端使用。
  *
  * @author cccll
- * @createTime 2020年06月31日 16:52:00
  */
 public interface ServiceProvider {
 

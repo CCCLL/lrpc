@@ -21,7 +21,6 @@ import java.util.concurrent.CompletableFuture;
  * 正是因为动态代理才让客户端调用的远程方法像是调用本地方法一样（屏蔽了中间过程）
  *
  * @author cccll
- * @createTime 2020年06月15日 23:01:00
  */
 @Slf4j
 public class RpcClientProxy implements InvocationHandler {

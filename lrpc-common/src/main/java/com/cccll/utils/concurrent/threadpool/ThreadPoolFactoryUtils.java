@@ -4,14 +4,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 创建 ThreadPool(线程池) 的工具类.
@@ -24,6 +17,7 @@ public final class ThreadPoolFactoryUtils {
 
     /**
      * 通过 threadNamePrefix 来区分不同线程池（我们可以把相同 threadNamePrefix 的线程池看作是为同一业务场景服务）。
+     * TODO :通过信号量机制( {@link Semaphore} 满足条件)限制创建的线程池数量（线程池和线程不是越多越好）
      * key: threadNamePrefix
      * value: threadPool
      */
