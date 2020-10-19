@@ -1,10 +1,11 @@
 package com.cccll.serialize;
 
+import com.cccll.extension.SPI;
+
 /**
  * 序列化接口，所有序列化类都要实现这个接口
  *
  * @author cccll
- * @createTime 2020年06月18日 23:29:00
  */
 @SPI
 public interface Serializer {

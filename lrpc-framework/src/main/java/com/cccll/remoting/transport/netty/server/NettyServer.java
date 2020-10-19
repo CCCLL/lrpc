@@ -2,6 +2,7 @@ package com.cccll.remoting.transport.netty.server;
 
 import com.cccll.config.CustomShutdownHook;
 import com.cccll.entity.RpcServiceProperties;
+import com.cccll.extension.ExtensionLoader;
 import com.cccll.factory.SingletonFactory;
 import com.cccll.provider.ServiceProvider;
 import com.cccll.provider.ServiceProviderImpl;
@@ -38,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class NettyServer {
 
-    private final Serializer kryoSerializer = new KryoSerializ  er();
+    private final Serializer kryoSerializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension("kyro");
     public static final int PORT = 9998;
 
     private final ServiceProvider serviceProvider = SingletonFactory.getInstance(ServiceProviderImpl.class);

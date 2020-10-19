@@ -1,5 +1,6 @@
 package com.cccll.remoting.transport.netty.client;
 
+import com.cccll.extension.ExtensionLoader;
 import com.cccll.remoting.dto.RpcRequest;
 import com.cccll.remoting.dto.RpcResponse;
 import com.cccll.remoting.transport.netty.codec.kyro.NettyKryoDecoder;
@@ -40,7 +41,7 @@ public final class NettyClient {
     public NettyClient() {
         eventLoopGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
-        Serializer kryoSerializer = new KryoSerializer();
+        Serializer kryoSerializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension("kyro");
         bootstrap.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.INFO))
