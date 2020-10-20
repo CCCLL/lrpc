@@ -3,6 +3,7 @@ package com.cccll.provider;
 import com.cccll.entity.RpcServiceProperties;
 import com.cccll.enumeration.RpcErrorMessage;
 import com.cccll.exception.RpcException;
+import com.cccll.extension.ExtensionLoader;
 import com.cccll.registry.ServiceRegistry;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServiceProviderImpl implements ServiceProvider {
 
     /**
+     * 服务实例缓存
      *
      * 因一个接口可被多个实现类实现，
      * 所以处理一个接口被两个实现类实现的情况，可通过 group 分组
@@ -71,6 +73,7 @@ public class ServiceProviderImpl implements ServiceProvider {
     public void publishService(Object service, RpcServiceProperties rpcServiceProperties) {
         try {
             String host = InetAddress.getLocalHost().getHostAddress();
+            //得到服务实例对象实现的接口
             Class<?> serviceRelatedInterface = service.getClass().getInterfaces()[0];
             String serviceName = serviceRelatedInterface.getCanonicalName();
             rpcServiceProperties.setServiceName(serviceName);

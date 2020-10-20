@@ -1,5 +1,7 @@
 package com.cccll.registry;
 
+import com.cccll.extension.SPI;
+
 import java.net.InetSocketAddress;
 
 /**
@@ -7,6 +9,7 @@ import java.net.InetSocketAddress;
  *
  * @author cccll
  */
+@SPI
 public interface ServiceRegistry {
     /**
      * 注册服务

@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 public final class ChannelProvider {
-
+    //已建立链接的channel的缓存
     private static Map<String, Channel> channels = new ConcurrentHashMap<>();
     private static NettyClient nettyClient;
 
