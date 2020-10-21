@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @createTime 2020年07月09日 21:33:00
  */
 public class UnprocessedRequests {
+    //此集合相当于Dubbo中的Futures
     private static final Map<String, CompletableFuture<RpcResponse<Object>>> UNPROCESSED_RESPONSE_FUTURES = new ConcurrentHashMap<>();
 
     public void put(String requestId, CompletableFuture<RpcResponse<Object>> future) {

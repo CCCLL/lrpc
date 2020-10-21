@@ -1,8 +1,8 @@
 package com.cccll.remoting.transport.netty.client;
 
+import com.cccll.extension.ExtensionLoader;
 import com.cccll.factory.SingletonFactory;
 import com.cccll.registry.ServiceDiscovery;
-import com.cccll.registry.zk.ZkServiceDiscovery;
 import com.cccll.remoting.dto.RpcRequest;
 import com.cccll.remoting.dto.RpcResponse;
 import com.cccll.remoting.transport.ClientTransport;
@@ -18,22 +18,29 @@ import java.util.concurrent.CompletableFuture;
  *
  * @author cccll
  */
+
 @Slf4j
 public class NettyClientTransport implements ClientTransport {
     private final ServiceDiscovery serviceDiscovery;
     private final UnprocessedRequests unprocessedRequests;
+    private final ChannelProvider channelProvider;
 
     public NettyClientTransport() {
-        this.serviceDiscovery = new ZkServiceDiscovery();
+        this.serviceDiscovery = ExtensionLoader.getExtensionLoader(ServiceDiscovery.class).getExtension("zk");
         this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
+        this.channelProvider = SingletonFactory.getInstance(ChannelProvider.class);
     }
 
     @Override
-    public CompletableFuture<RpcResponse> sendRpcRequest(RpcRequest rpcRequest) {
+    public CompletableFuture<RpcResponse<Object>> sendRpcRequest(RpcRequest rpcRequest) {
         // 构建返回值
-        CompletableFuture<RpcResponse> resultFuture = new CompletableFuture<>();
-        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcRequest.getInterfaceName());
-        Channel channel = ChannelProvider.get(inetSocketAddress);
+        CompletableFuture<RpcResponse<Object>> resultFuture = new CompletableFuture<>();
+        // 通过rpcRequest构建rpc服务名
+        String rpcServiceName = rpcRequest.toRpcProperties().toRpcServiceName();
+        // get server address
+        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcServiceName);
+        // 获取  server address 对应的 channel
+        Channel channel = channelProvider.get(inetSocketAddress);
         if (channel != null && channel.isActive()) {
             // 放入未处理的请求
             unprocessedRequests.put(rpcRequest.getRequestId(), resultFuture);
