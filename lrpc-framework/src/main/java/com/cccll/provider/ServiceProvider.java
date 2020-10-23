@@ -36,7 +36,8 @@ public interface ServiceProvider {
     void publishService(Object service, RpcServiceProperties rpcServiceProperties);
 
     /**
-     * @param service service object
+     * 发布服务
+     * @param service 服务实例对象
      */
     void publishService(Object service);
 }

@@ -1,4 +1,5 @@
 import com.cccll.HelloService;
+import com.cccll.annotation.RpcScan;
 import com.cccll.entity.RpcServiceProperties;
 import com.cccll.remoting.transport.netty.server.NettyServer;
 import com.cccll.serviceimpl.HelloServiceImpl2;
