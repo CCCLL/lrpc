@@ -15,7 +15,6 @@ import java.io.ByteArrayOutputStream;
  * Kryo序列化类，Kryo序列化效率很高，但是只兼容 Java 语言
  *
  * @author cccll
- * @createTime 2020年06月10日 20:42:00
  */
 public class KryoSerializer implements Serializer {
 

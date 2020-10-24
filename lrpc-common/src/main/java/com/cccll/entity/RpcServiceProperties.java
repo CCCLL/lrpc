@@ -2,10 +2,7 @@ package com.cccll.entity;
 
 import lombok.*;
 
-/**
- * @author cccll
- * @createTime 2020年08月21日 20:09:32
- **/
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
  * channelRead 方法会替你释放 ByteBuf ，避免可能导致的内存泄露问题。详见《Netty进阶之路 跟着案例学 Netty》
  *
  * @author cccll
- * @createTime 2020年07月01日 22:44:00
  */
 @Slf4j
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
@@ -33,6 +32,9 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         this.rpcRequestHandler = SingletonFactory.getInstance(RpcRequestHandler.class);
     }
 
+    /**
+     * 读取从客户端发送的消息，然后调用目标服务的目标方法并返回给客户端。
+     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {

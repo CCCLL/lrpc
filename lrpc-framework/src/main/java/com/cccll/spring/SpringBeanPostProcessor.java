@@ -1,6 +1,7 @@
 package com.cccll.spring;
 
 import com.cccll.annotation.RpcService;
+import com.cccll.entity.RpcServiceProperties;
 import com.cccll.factory.SingletonFactory;
 import com.cccll.provider.ServiceProvider;
 import com.cccll.provider.ServiceProviderImpl;
@@ -31,7 +32,12 @@ public class SpringBeanPostProcessor implements BeanPostProcessor {
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean.getClass().isAnnotationPresent(RpcService.class)) {
             log.info("[{}] is annotated with  [{}]", bean.getClass().getName(), RpcService.class.getCanonicalName());
-            serviceProvider.publishService(bean);
+            // get RpcService annotation
+            RpcService rpcService = bean.getClass().getAnnotation(RpcService.class);
+            // build RpcServiceProperties
+            RpcServiceProperties rpcServiceProperties = RpcServiceProperties.builder()
+                    .group(rpcService.group()).version(rpcService.version()).build();
+            serviceProvider.publishService(bean, rpcServiceProperties);
         }
         return bean;
     }

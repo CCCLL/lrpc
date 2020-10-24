@@ -29,7 +29,7 @@ public class ZkServiceDiscovery implements ServiceDiscovery {
     @Override
     public InetSocketAddress lookupService(String rpcServiceName) {
         CuratorFramework zkClient = CuratorUtils.getZkClient();
-        
+        //获取rpcServiceName下所有子节点（服务地址），相同服务被部署多份就有多个，如果此服务只部署一台，则此集合中只有一个服务地址
         List<String> serviceUrlList = CuratorUtils.getChildrenNodes(zkClient, rpcServiceName);
         if (serviceUrlList.size() == 0) {
             throw new RpcException(RpcErrorMessage.SERVICE_CAN_NOT_BE_FOUND, rpcServiceName);

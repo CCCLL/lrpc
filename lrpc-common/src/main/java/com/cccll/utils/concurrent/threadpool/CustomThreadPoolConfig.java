@@ -10,8 +10,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * 线程池自定义配置类，可自行根据业务场景修改配置参数。
  *
- * @author cccll
- * @createTime 2020年07月10日 23:03:00
  */
 @Setter
 @Getter

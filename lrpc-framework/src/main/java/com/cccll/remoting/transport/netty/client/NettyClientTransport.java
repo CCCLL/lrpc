@@ -49,6 +49,7 @@ public class NettyClientTransport implements ClientTransport {
                     log.info("client send message: [{}]", rpcRequest);
                 } else {
                     future.channel().close();
+                    //当调用CompletableFuture.get()被阻塞的时候,那么这个方法就是结束阻塞,并且get()获取发生的异常.
                     resultFuture.completeExceptionally(future.cause());
                     log.error("Send failed:", future.cause());
                 }

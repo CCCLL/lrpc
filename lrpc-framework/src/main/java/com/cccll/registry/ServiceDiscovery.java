@@ -9,10 +9,10 @@ import java.net.InetSocketAddress;
 
 public interface ServiceDiscovery {
     /**
-     * 根据 rpcServiceName 查找相应服务
+     * 根据 rpcServiceName 获取远程服务地址
      *
      * @param rpcServiceName 服务名称
-     * @return 提供服务的地址
+     * @return 远程服务地址
      */
     InetSocketAddress lookupService(String rpcServiceName);
 }

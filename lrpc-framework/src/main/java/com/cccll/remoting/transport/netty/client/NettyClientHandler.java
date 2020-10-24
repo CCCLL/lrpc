@@ -37,7 +37,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * 读取服务端传输的消息
+     * 读取从服务端返回的消息
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
@@ -53,6 +53,9 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     *  Netty 心跳机制相关。保证客户端和服务端的连接不被断掉，避免重连。
+     */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {

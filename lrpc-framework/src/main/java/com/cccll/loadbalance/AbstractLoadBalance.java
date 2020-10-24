@@ -5,8 +5,6 @@ import java.util.List;
 /**
  * 负载均衡策略的抽象类
  *
- * @author cccll
- * @createTime 2020年07月25日 21:06:00
  */
 public abstract class AbstractLoadBalance implements LoadBalance {
     @Override

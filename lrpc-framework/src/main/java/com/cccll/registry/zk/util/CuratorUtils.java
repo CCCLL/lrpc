@@ -21,7 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public final class CuratorUtils {
+    //重试之间等待的初始时间
     private static final int BASE_SLEEP_TIME = 1000;
+    //最大重试次数
     private static final int MAX_RETRIES = 3;
     public static final String ZK_REGISTER_ROOT_PATH = "/my-rpc";
     private static final Map<String, List<String>> SERVICE_ADDRESS_MAP = new ConcurrentHashMap<>();
@@ -42,7 +44,7 @@ public final class CuratorUtils {
             if (REGISTERED_PATH_SET.contains(path) || zkClient.checkExists().forPath(path) != null) {
                 log.info("节点已经存在. The node is:[{}]", path);
             } else {
-                //eg: /my-rpc/com.cccll.HelloService/127.0.0.1:9999
+                //eg: /my-rpc/com.cccll.HelloServicetest1version1/127.0.0.1:9999
                 zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath(path);
                 log.info("节点已成功创建. The node is:[{}]", path);
             }
@@ -55,10 +57,11 @@ public final class CuratorUtils {
     /**
      * Gets the children under a node
      *
-     * @param rpcServiceName rpc service name eg:github.javaguide.HelloServicetest2version1
+     * @param rpcServiceName rpc service name  （class name+group+version） eg: com.cccll.HelloServicetest1version1
      * @return All child nodes under the specified node
      */
     public static List<String> getChildrenNodes(CuratorFramework zkClient, String rpcServiceName) {
+        //Get from cache
         if (SERVICE_ADDRESS_MAP.containsKey(rpcServiceName)) {
             return SERVICE_ADDRESS_MAP.get(rpcServiceName);
         }
@@ -112,11 +115,12 @@ public final class CuratorUtils {
     /**
      * Registers to listen for changes to the specified node
      *
-     * @param rpcServiceName rpc service name eg:github.javaguide.HelloServicetest2version
+     * @param rpcServiceName rpc service name （class name+group+version） eg:com.cccll.HelloServicetest2version1
      */
     private static void registerWatcher(String rpcServiceName, CuratorFramework zkClient) {
         String servicePath = ZK_REGISTER_ROOT_PATH + "/" + rpcServiceName;
         PathChildrenCache pathChildrenCache = new PathChildrenCache(zkClient, servicePath, true);
+        //当有服务节点发生改动，更新缓存
         PathChildrenCacheListener pathChildrenCacheListener = (curatorFramework, pathChildrenCacheEvent) -> {
             List<String> serviceAddresses = curatorFramework.getChildren().forPath(servicePath);
             SERVICE_ADDRESS_MAP.put(rpcServiceName, serviceAddresses);

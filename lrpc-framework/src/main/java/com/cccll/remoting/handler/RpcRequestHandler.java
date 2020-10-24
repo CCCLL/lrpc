@@ -14,7 +14,6 @@ import java.lang.reflect.Method;
  * RpcRequest 处理器
  *
  * @author cccll
- * @createTime 2020年06月16日 09:05:00
  */
 @Slf4j
 public class RpcRequestHandler {
@@ -26,9 +25,10 @@ public class RpcRequestHandler {
 
     /**
      * 处理 rpcRequest ：调用对应的方法，然后返回方法执行结果
+     *
      */
     public Object handle(RpcRequest rpcRequest) {
-        //通过注册中心获取到目标类（客户端需要调用类）
+        //通过注册中心获取到目标类（客户端需要调用的目标类）
         Object service = serviceProvider.getService(rpcRequest.toRpcProperties());
         return invokeTargetMethod(rpcRequest, service);
     }

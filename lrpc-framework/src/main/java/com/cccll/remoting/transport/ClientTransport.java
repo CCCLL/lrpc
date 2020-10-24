@@ -5,8 +5,6 @@ import com.cccll.remoting.dto.RpcRequest;
 /**
  * send RpcRequest
  *
- * @author cccll
- * @createTime 2020年06月29日 20:26:00
  */
 public interface ClientTransport {
     /**

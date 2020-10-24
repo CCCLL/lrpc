@@ -6,10 +6,7 @@ import lombok.*;
 
 import java.io.Serializable;
 
-/**
- * @author cccll
- * @createTime 2020年05月10日 08:24:00
- */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -23,7 +20,9 @@ public class RpcRequest implements Serializable {
     private Object[] parameters;
     private Class<?>[] paramTypes;
     private RpcMessageType rpcMessageType;
+    //服务版本，主要是为后续不兼容升级提供可能
     private String version;
+    //主要用于处理一个接口有多个类实现的情况
     private String group;
 
     public RpcServiceProperties toRpcProperties() {
