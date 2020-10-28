@@ -4,11 +4,7 @@ import com.cccll.enumeration.RpcMessageType;
 import com.cccll.factory.SingletonFactory;
 import com.cccll.remoting.dto.RpcRequest;
 import com.cccll.remoting.dto.RpcResponse;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
@@ -35,6 +31,18 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
         this.channelProvider = SingletonFactory.getInstance(ChannelProvider.class);
     }
+
+    /**
+     * 利用Netty提供的高水位机制，对客户端做流控，避免netty发送队列积压发生OOM，
+     * 当发送队列发送的字节数组到达高水位时，对应channel变为不可写状态，注意在此状态下调用write方法仍可将消息
+     * 加入待发送队列，所以须在代码中对channel状态做判断
+     *
+     */
+//    @Override
+//    public void channelActive(ChannelHandlerContext ctx) {
+//        //此值须根据业务的QPS规划、客户端处理性能、网络带宽、链路数、消息平均码流大小等综合因素计算
+//        ctx.channel().config().setWriteBufferHighWaterMark(10*1024*1024);
+//    }
 
     /**
      * 读取从服务端返回的消息
