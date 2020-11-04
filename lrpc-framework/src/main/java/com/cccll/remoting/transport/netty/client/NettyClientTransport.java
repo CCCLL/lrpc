@@ -41,7 +41,8 @@ public class NettyClientTransport implements ClientTransport {
         InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcServiceName);
         // 获取  server address 对应的 channel
         Channel channel = channelProvider.get(inetSocketAddress);
-        if (channel != null && channel.isActive()) {
+        // 此处的channel.isWritable()检查主要是利用Netty的高水位机制来实现流控
+        if (channel != null && channel.isActive() && channel.isWritable()) {
             // 放入未处理的请求
             unprocessedRequests.put(rpcRequest.getRequestId(), resultFuture);
             channel.writeAndFlush(rpcRequest).addListener((ChannelFutureListener) future -> {

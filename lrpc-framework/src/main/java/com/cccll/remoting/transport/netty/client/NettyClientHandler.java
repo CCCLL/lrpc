@@ -38,11 +38,11 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
      * 加入待发送队列，所以须在代码中对channel状态做判断
      *
      */
-//    @Override
-//    public void channelActive(ChannelHandlerContext ctx) {
-//        //此值须根据业务的QPS规划、客户端处理性能、网络带宽、链路数、消息平均码流大小等综合因素计算
-//        ctx.channel().config().setWriteBufferHighWaterMark(10*1024*1024);
-//    }
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        //此值须根据业务的QPS规划、客户端处理性能、网络带宽、链路数、消息平均码流大小等综合因素计算
+        ctx.channel().config().setWriteBufferHighWaterMark(20*1024*1024);
+    }
 
     /**
      * 读取从服务端返回的消息
