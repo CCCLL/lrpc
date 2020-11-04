@@ -62,7 +62,14 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     *  Netty 心跳机制相关。保证客户端和服务端的连接不被断掉，避免重连。
+     *  Netty 心跳机制，当发生空闲超时时，会触发此方法，给服务器发送一个心跳请求，保证客户端和服务端的连接不被断掉，避免重连。
+     *  Netty通过IdleStateHandler实现的此种心跳机制不是一种双向心跳的PING-PONG模式，而是客户端发送心跳数据包，
+     *  服务端接收心跳但不回复，因为一般应用rpc框架的服务端可能同时有上千个连接，心跳的回复需要消耗大量网络资源；
+     *  如果服务端一段时间内内有收到客户端的心跳数据包则认为客户端已经下线，将通道关闭避免资源的浪费；
+     *  在这种心跳模式下服务端可以感知客户端的存活情况，无论是宕机的正常下线还是网络问题的非正常下线，服务端都能感知到，
+     *  而客户端不能感知到服务端的非正常下线。
+     *  要想实现客户端感知服务端的存活情况，需要进行双向的心跳；Netty中的channelInactive()方法是通过Socket连接关闭时挥手数据包触发的，
+     *  因此可以通过channelInactive()方法感知正常的下线情况，但是因为网络异常等非正常下线则无法感知。
      */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {

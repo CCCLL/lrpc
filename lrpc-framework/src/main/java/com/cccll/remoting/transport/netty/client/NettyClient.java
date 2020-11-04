@@ -50,7 +50,7 @@ public final class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) {
-                        // 如果 15 秒之内没有发送数据给服务端的话，就发送一次心跳请求
+                        // 设定IdleStateHandler心跳检测每5秒进行一次写检测，如果5秒内write()方法未被调用则触发一次userEventTrigger()方法，如果 5 秒之内没有发送数据给服务端的话，就发送一次心跳请求
                         ch.pipeline().addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
                         /*
                          自定义序列化编解码器
