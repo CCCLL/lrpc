@@ -1,1 +1,1 @@
-zk=com.cccll.registry.ServiceDiscovery
+zk=com.cccll.registry.zk.ZkServiceDiscovery

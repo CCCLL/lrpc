@@ -16,7 +16,6 @@ import java.util.List;
  * 基于 zookeeper 实现服务发现
  *
  * @author cccll
- * @createTime 2020年07月09日 19:16:00
  */
 @Slf4j
 public class ZkServiceDiscovery implements ServiceDiscovery {

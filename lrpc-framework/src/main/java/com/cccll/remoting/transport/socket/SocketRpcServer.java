@@ -19,7 +19,6 @@ import static com.cccll.remoting.transport.netty.server.NettyServer.PORT;
 
 /**
  * @author cccll
- * @createTime 2020年06月09日 08:01:00
  */
 @Slf4j
 public class SocketRpcServer {

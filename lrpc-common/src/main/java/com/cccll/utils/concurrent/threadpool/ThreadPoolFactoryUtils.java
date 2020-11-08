@@ -29,6 +29,7 @@ public final class ThreadPoolFactoryUtils {
 
     public static ExecutorService createCustomThreadPoolIfAbsent(String threadNamePrefix) {
         CustomThreadPoolConfig customThreadPoolConfig = new CustomThreadPoolConfig();
+        //缺省为非守护线程
         return createCustomThreadPoolIfAbsent(customThreadPoolConfig, threadNamePrefix, false);
     }
 
@@ -74,6 +75,9 @@ public final class ThreadPoolFactoryUtils {
 
     /**
      * 创建 ThreadFactory 。如果threadNamePrefix不为空则使用自建ThreadFactory，否则使用defaultThreadFactory
+     * 为不同的线程池提供不同的ThreadFactory，可为不同的线程池的线程设置易读的名称，方便调试，
+     * ThreadFactory也可为线程设置状态（可设置是否为守护线程，线程优先级等），
+     * 使用ThreadFactory创建线程也是编程规范所推荐的
      *
      * @param threadNamePrefix 作为创建的线程名字的前缀
      * @param daemon           指定是否为 Daemon Thread(守护线程)
