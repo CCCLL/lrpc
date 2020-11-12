@@ -23,6 +23,12 @@ public class CustomScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
     private static final String BASE_PACKAGE_ATTRIBUTE_NAME = "basePackage";
     private ResourceLoader resourceLoader;
 
+    /**
+     * Spring会自动调用：implements了ResourceLoaderAware接口类的实现方法：setResourceLoader()，
+     * 将ApplicationContext的ResourceLoader注入进去,此处获取了上下文的ResourceLoader，便于后续
+     * 将上下文的ResourceLoader传给自定义的bean 扫描器。
+     * @param resourceLoader
+     */
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
@@ -31,19 +37,21 @@ public class CustomScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry beanDefinitionRegistry) {
-        // 获取RpcScan注解的属性和值
+        // 获取RpcScan注解属性和值的map，然后转成AnnotationAttributes，AnnotationAttributes是Spring提供的注解的属性和值的包装类，底层也是map结构，它继承了LinkedHashMap
         AnnotationAttributes rpcScanAnnotationAttributes = AnnotationAttributes.fromMap(annotationMetadata.getAnnotationAttributes(RpcScan.class.getName()));
         String[] rpcScanBasePackages = new String[0];
         if (rpcScanAnnotationAttributes != null) {
             // 获取basePackage属性的值
             rpcScanBasePackages = rpcScanAnnotationAttributes.getStringArray(BASE_PACKAGE_ATTRIBUTE_NAME);
         }
+        //满足此条件则说明我们没有给@RpcScan的basePackage赋值
         if (rpcScanBasePackages.length == 0) {
+            //得到标注@RpcScan的类的包名，作为被扫描的包（这里借用Spring Boot的思想，把标注@RpcScan的类放到最外层包下就可扫描所有子包下的类）
             rpcScanBasePackages = new String[]{((StandardAnnotationMetadata) annotationMetadata).getIntrospectedClass().getPackage().getName()};
         }
-        // 扫描 RpcService 注解
+        // 扫描标注 RpcService 注解的类
         CustomScanner rpcServiceScanner = new CustomScanner(beanDefinitionRegistry, RpcService.class);
-        // 扫描 Component 注解
+        // 扫描标注 Component 注解的类
         CustomScanner springBeanScanner = new CustomScanner(beanDefinitionRegistry, Component.class);
         if (resourceLoader != null) {
             rpcServiceScanner.setResourceLoader(resourceLoader);
