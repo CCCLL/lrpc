@@ -7,7 +7,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import java.lang.annotation.Annotation;
 
 /**
- * 自定义 bean 扫描器
+ * 自定义包扫描器
  *
  * @author cccll
  */

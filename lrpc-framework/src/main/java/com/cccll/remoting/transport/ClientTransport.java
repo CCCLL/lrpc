@@ -1,11 +1,13 @@
 package com.cccll.remoting.transport;
 
+import com.cccll.extension.SPI;
 import com.cccll.remoting.dto.RpcRequest;
 
 /**
  * send RpcRequest
  *
  */
+@SPI
 public interface ClientTransport {
     /**
      * 发送rpc请求到服务器并获得结果

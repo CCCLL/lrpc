@@ -1,0 +1,2 @@
+nettyClientTransport=com.cccll.remoting.transport.netty.client.NettyClientTransport
+socketRpcClient=com.cccll.remoting.transport.socket.SocketRpcClient

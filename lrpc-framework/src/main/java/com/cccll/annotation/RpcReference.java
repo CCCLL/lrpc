@@ -8,23 +8,23 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * RpcService 注解，标记在服务实现类上
+ * 标注此注解，可自动装配服务实现类
  *
  * @author cccll
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ElementType.FIELD})
 @Inherited
-public @interface RpcService {
+public @interface RpcReference {
 
     /**
-     * Service version, 默认值为空字符串
+     * Service version, default value is empty string
      */
     String version() default "";
 
     /**
-     * Service group, 默认值为空字符串
+     * Service group, default value is empty string
      */
     String group() default "";
 

@@ -11,13 +11,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 扫描自定义注解的注解
+ * 扫描自定义注解的注解，模仿@ComponentScan
+ *
  *
  * @author cccll
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-// @Import通过快速导入的方式实现把实例加入spring的IOC容器中
+// @Import仅仅是引入，不会被Spring容器管理
 @Import(CustomScannerRegistrar.class)
 @Documented
 public @interface RpcScan {

@@ -24,9 +24,11 @@ public class CustomScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
     private ResourceLoader resourceLoader;
 
     /**
-     * Spring会自动调用：implements了ResourceLoaderAware接口类的实现方法：setResourceLoader()，
-     * 将ApplicationContext的ResourceLoader注入进去,此处获取了上下文的ResourceLoader，便于后续
-     * 将上下文的ResourceLoader传给自定义的bean 扫描器。
+     * Spring启动时会自动调用：implements了ResourceLoaderAware接口类的实现方法：setResourceLoader()，
+     * 将ResourceLoader注入进去,此处的ResourceLoader就是我们创建的ApplicationContext对象，
+     * 因为ApplicationContext相关类或其父类都实现了ResourceLoader接口，或其子接口ResourcePatternResolver，
+     * 后续代码会将此resourceLoader传递给我们自定义的包扫描器。
+     * 实现以Aware后缀的接口，一般都是为了获得spring的一些数据
      * @param resourceLoader
      */
     @Override
@@ -59,8 +61,8 @@ public class CustomScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
         }
         int springBeanAmount = springBeanScanner.scan(SPRING_BEAN_BASE_PACKAGE);
         log.info("springBeanScanner扫描的数量 [{}]", springBeanAmount);
-        int scanCount = rpcServiceScanner.scan(rpcScanBasePackages);
-        log.info("rpcServiceScanner扫描的数量 [{}]", scanCount);
+        int rpcServiceCount = rpcServiceScanner.scan(rpcScanBasePackages);
+        log.info("rpcServiceScanner扫描的数量 [{}]", rpcServiceCount);
     }
 
 }
