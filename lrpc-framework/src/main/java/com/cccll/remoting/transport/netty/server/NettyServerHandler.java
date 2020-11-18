@@ -34,6 +34,12 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     /**
      * 读取从客户端发送的消息，然后调用目标服务的目标方法并返回给客户端。
+     *
+     * TODO: 因考虑到RPC框架一般用于拆分服务，所以考虑到服务之间的调用会较为频繁，因此框架服务端与客户端使用的是长连接。
+     *  长连接的弊端就是如果较多客户端连接服务端，则服务端就要维持大量与客户端的连接，这对服务端是一种负担，如果遇到
+     *  某些客户端正常通信后长时间不再与服务端正常通信，只是发心跳请求维持链接，而服务端还要维持着链接则无疑是对服务端
+     *  内存和机器性能的负担，所以可以考虑加个心跳计数器，每个Channel对应一个心跳数，每次有心跳信息过来就给对应Channel
+     *  加1，非心跳请求过来就把对应Channel计数器置0，当心跳数达到值则把对应Channel关掉。
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
