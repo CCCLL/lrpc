@@ -35,7 +35,7 @@ public class NettyClientTransport implements ClientTransport {
     public CompletableFuture<RpcResponse<Object>> sendRpcRequest(RpcRequest rpcRequest) {
         // 构建返回值
         CompletableFuture<RpcResponse<Object>> resultFuture = new CompletableFuture<>();
-        // 通过rpcRequest构建rpc服务名
+        // 通过rpcRequest构建rpc服务名  eg：com.cccll.HelloServicetest2version2
         String rpcServiceName = rpcRequest.toRpcProperties().toRpcServiceName();
         // get server address
         InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcServiceName);

@@ -57,6 +57,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             if (ctx.channel().isActive() && ctx.channel().isWritable()) {
                 //返回方法执行结果给客户端
                 RpcResponse<Object> rpcResponse = RpcResponse.success(result, rpcRequest.getRequestId());
+                //增加ChannelFutureListener.CLOSE_ON_FAILURE监听器，如果传送未成功，将会关闭此链接（Channel）
                 ctx.writeAndFlush(rpcResponse).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
             } else {
                 RpcResponse<Object> rpcResponse = RpcResponse.fail(RpcResponseCode.FAIL);
